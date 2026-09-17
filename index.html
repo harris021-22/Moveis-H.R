@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Móveis H.R | Catálogo de Móveis | Pronta Entrega & Preços Especiais</title>
+  <meta name="description" content="Catálogo completo de móveis Móveis H.R: Sala de TV, Quartos, Mesas de Jantar, Estofados e Cozinhas. Compre direto pelo WhatsApp com entrega rápida para o Rio de Janeiro!">
+  
+  <!-- Fontes Google -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Ícones Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Estilos Customizados -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Barra Superior de Avisos -->
+  <div class="top-announcement">
+    <div class="container announcement-content">
+      <span><i class="fa-solid fa-truck-fast"></i> Frete e montagem para Grande Rio — sob consulta por região e produto</span>
+      <a href="https://wa.me/5521964551053" target="_blank" class="top-whatsapp-link">
+        <i class="fa-brands fa-whatsapp"></i> Atendimento WhatsApp: <strong>(21) 96455-1053</strong>
+      </a>
+    </div>
+  </div>
+
+  <!-- Cabeçalho Principal (Inspirado no estilo Rufer, sem área de login) -->
+  <header class="main-header">
+    <div class="container header-container">
+      
+      <!-- Marca / Logo -->
+      <div class="brand-area">
+        <a href="#" class="logo-link">
+          <div class="logo-icon"><i class="fa-solid fa-couch"></i></div>
+          <div class="logo-text">
+            <span class="brand-name">MÓVEIS <span>H.R</span></span>
+            <span class="brand-tagline">Catálogo &amp; Showroom Digital</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Barra de Busca Instantânea -->
+      <div class="search-area">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
+          <input type="text" id="searchInput" placeholder="Buscar por nome, fabricante ou categoria" autocomplete="off" aria-label="Buscar móveis no catálogo por nome, fabricante ou categoria">
+          <button id="clearSearchBtn" class="clear-search-btn" title="Limpar busca" aria-label="Limpar campo de pesquisa" style="display:none;">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Ações do Cabeçalho -->
+      <div class="header-actions">
+        <!-- Contato Rápido WhatsApp -->
+        <a href="https://wa.me/5521964551053?text=Ol%C3%A1!%20Gostaria%20de%20tirar%20uma%20d%C3%BAvida%20sobre%20os%20m%C3%B3veis" target="_blank" class="btn-header-whatsapp" title="Falar com Especialista">
+          <i class="fa-brands fa-whatsapp"></i>
+          <div class="btn-text-block">
+            <span class="subtext">Fale com vendedor</span>
+            <span class="maintext">(21) 96455-1053</span>
+          </div>
+        </a>
+
+        <!-- Botão Carrinho de Orçamentos -->
+        <button id="btnOpenCart" class="btn-cart-trigger" title="Ver Orçamento">
+          <div class="cart-icon-wrapper">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <span id="cartCountBadge" class="cart-badge">0</span>
+          </div>
+          <div class="cart-text-wrapper">
+            <span class="cart-label">Orçamento</span>
+            <span id="cartTotalHeader" class="cart-total-val">R$ 0,00</span>
+          </div>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Navegação por Categorias com Abas e Submenus (Dropdown igual ao print) -->
+  <nav class="category-nav">
+    <div class="container">
+      <div class="nav-menu" id="categoryMenu">
+        
+        <!-- Novidades -->
+        <div class="nav-item has-dropdown">
+          <button class="nav-link cat-tab" data-category="Novidades" type="button">
+            Novidades
+          </button>
+          <div class="nav-dropdown">
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Novidades" data-sub="Lançamentos">Lançamentos</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Novidades" data-sub="Pronta Entrega">Pronta Entrega RJ</a>
+          </div>
+        </div>
+
+        <!-- Promoções -->
+        <div class="nav-item has-dropdown">
+          <button class="nav-link cat-tab" data-category="Promocoes" type="button">
+            Promoções
+          </button>
+          <div class="nav-dropdown">
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Promocoes" data-sub="Ofertas">Ofertas Especiais</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Promocoes" data-sub="Super Descontos">Super Descontos</a>
+          </div>
+        </div>
+
+        <!-- Estofados -->
+        <div class="nav-item has-dropdown">
+          <button class="nav-link cat-tab" data-category="Estofados e Sofás" type="button">
+            Estofados
+          </button>
+          <div class="nav-dropdown">
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Estofados e Sofás" data-sub="Sofá Retrátil">Sofá Retrátil</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Estofados e Sofás" data-sub="Sofá Retrátil sem Caixa">Sofá Retrátil sem Caixa</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Estofados e Sofás" data-sub="Sofá 3 e 2 Lugares">Sofá 3 e 2 Lugares</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Estofados e Sofás" data-sub="Sofá com Chaise">Sofá com Chaise</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Estofados e Sofás" data-sub="Sofá de Canto">Sofá de Canto</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Estofados e Sofás" data-sub="Sofá-cama">Sofá-cama</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Estofados e Sofás" data-sub="Poltronas">Poltronas</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Estofados e Sofás" data-sub="Sofá por Cor">Sofá por Cor</a>
+          </div>
+        </div>
+
+        <!-- Mesa de Jantar -->
+        <div class="nav-item has-dropdown">
+          <button class="nav-link cat-tab" data-category="Mesa de Jantar" type="button">
+            Mesa de Jantar
+          </button>
+          <div class="nav-dropdown">
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Mesa de Jantar" data-sub="Mesa de Jantar">Mesas de Jantar</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Mesa de Jantar" data-sub="Mesa 4 Cadeiras">Mesa 4 Cadeiras</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Mesa de Jantar" data-sub="Mesa 6 Cadeiras">Mesa 6 Cadeiras</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Mesa de Jantar" data-sub="Cadeiras">Cadeiras</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Mesa de Jantar" data-sub="Bases e Tampos">Bases e Tampos</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Mesa de Jantar" data-sub="Buffet e Aparador">Buffet e Aparador</a>
+          </div>
+        </div>
+
+        <!-- Sala de TV -->
+        <div class="nav-item has-dropdown">
+          <button class="nav-link cat-tab" data-category="Sala de TV" type="button">
+            Sala de TV
+          </button>
+          <div class="nav-dropdown">
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Sala de TV" data-sub="Painel">Painéis para TV</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Sala de TV" data-sub="Rack">Racks e Bancadas</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Sala de TV" data-sub="Home Suspenso">Home Suspenso</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Sala de TV" data-sub="Cantinho do Café">Cantinho do Café</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Sala de TV" data-sub="Mesa de Apoio">Mesas de Apoio</a>
+          </div>
+        </div>
+
+        <!-- Quarto Solteiro -->
+        <div class="nav-item has-dropdown">
+          <button class="nav-link cat-tab" data-category="Quarto Solteiro" type="button">
+            Quarto Solteiro
+          </button>
+          <div class="nav-dropdown">
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Quarto Solteiro" data-sub="Guarda-roupa Solteiro">Guarda-roupa Solteiro</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Quarto Solteiro" data-sub="Cama Solteiro">Cama e Box Solteiro</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Quarto Solteiro" data-sub="Colchão Solteiro">Colchão Solteiro</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Quarto Solteiro" data-sub="Escrivaninha">Escrivaninha e Mesa</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Quarto Solteiro" data-sub="Penteadeira">Penteadeira</a>
+          </div>
+        </div>
+
+        <!-- Quarto Casal -->
+        <div class="nav-item has-dropdown">
+          <button class="nav-link cat-tab" data-category="Quarto Casal" type="button">
+            Quarto Casal
+          </button>
+          <div class="nav-dropdown">
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Quarto Casal" data-sub="Guarda-roupa Casal">Guarda-roupa Casal</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Quarto Casal" data-sub="Cama Casal">Cama e Box Casal</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Quarto Casal" data-sub="Colchão Casal">Colchão Casal</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Quarto Casal" data-sub="Cômoda">Cômodas e Sapateiras</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Quarto Casal" data-sub="Cabeceira">Cabeceiras</a>
+          </div>
+        </div>
+
+        <!-- Modulados -->
+        <div class="nav-item has-dropdown">
+          <button class="nav-link cat-tab" data-category="Modulados" type="button">
+            Modulados
+          </button>
+          <div class="nav-dropdown">
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Modulados" data-sub="Módulos">Armários Modulados</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Modulados" data-sub="Prateleiras">Prateleiras e Nichos</a>
+          </div>
+        </div>
+
+        <!-- Cozinha -->
+        <div class="nav-item has-dropdown">
+          <button class="nav-link cat-tab" data-category="Cozinha" type="button">
+            Cozinha
+          </button>
+          <div class="nav-dropdown">
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Cozinha" data-sub="Aéreo">Armários Aéreos</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Cozinha" data-sub="Balcão">Balcões de Cozinha</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Cozinha" data-sub="Torre Quente">Torres Quentes e Paneleiros</a>
+            <a href="javascript:void(0)" class="dropdown-item" data-category="Cozinha" data-sub="Cozinha Completa">Cozinhas Completas</a>
+          </div>
+        </div>
+
+        <!-- Todos os Móveis -->
+        <div class="nav-item">
+          <button class="nav-link cat-tab active" data-category="todos" type="button">
+            Todos os Móveis
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+
+  <!-- Banner Promocional -->
+  <section class="hero-banner">
+    <div class="container hero-container">
+      <div class="hero-content">
+        <h1 class="hero-title">Móveis <span>H.R</span> — Direto de Fábrica no Rio de Janeiro</h1>
+        <p class="hero-description">Catálogo completo de móveis para sala, quartos, cozinha e estofados com pronta entrega para todo o Grande Rio. Peça direto no WhatsApp com atendimento humanizado.</p>
+      </div>
+      
+      <div class="hero-cta-box">
+        <div class="cta-card">
+          <div class="cta-icon"><i class="fa-brands fa-whatsapp"></i></div>
+          <h2 class="cta-title">Tem dúvida ou quer ver fotos reais?</h2>
+          <p>Nosso consultor responde na hora com fotos reais, medidas e prazo de entrega.</p>
+          <a href="https://wa.me/5521964551053?text=Ol%C3%A1!%20Gostaria%20de%20consultar%20um%20m%C3%B3vel" target="_blank" class="btn-hero-cta" aria-label="Enviar mensagem ao consultor no WhatsApp">
+            <i class="fa-brands fa-whatsapp"></i> Falar com consultor
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção Principal de Produtos com Sidebar de Filtros (Igual ao print) -->
+  <main class="main-catalog container">
+    
+    <!-- Cabeçalho Informativo da Categoria (Igual ao print) -->
+    <div class="category-header-banner" id="categoryHeaderBanner">
+      <h2 id="categoryBannerTitle">Todos os Móveis no Atacado RJ</h2>
+      <p id="categoryBannerDesc">Móveis de alta qualidade com pronta entrega em todo o Rio de Janeiro. Escolha uma categoria acima ou filtre pelas opções abaixo.</p>
+    </div>
+
+    <div class="catalog-layout">
+      <!-- Sidebar de Filtros Lateral (Igual ao print) -->
+      <aside class="catalog-sidebar" id="catalogSidebar">
+        <!-- Wrapper interno do drawer mobile -->
+        <div class="sidebar-inner">
+
+          <!-- Cabeçalho do drawer (visível apenas no mobile) -->
+          <div class="drawer-header">
+            <span class="drawer-title"><i class="fa-solid fa-sliders"></i> Filtros</span>
+            <button id="btnCloseMobileFilter" class="drawer-close-btn" type="button" aria-label="Fechar filtros">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <!-- Bloco de Categorias / Subcategorias -->
+          <div class="sidebar-box">
+            <div class="sidebar-header" onclick="toggleSidebarSection(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleSidebarSection(this);}" tabindex="0" role="button" aria-expanded="true" aria-label="Recolher ou expandir categorias">
+              <h3>Categorias</h3>
+              <span class="collapse-icon" aria-hidden="true">&minus;</span>
+            </div>
+            <div class="sidebar-content" id="sidebarCategoryList">
+              <!-- Gerado dinamicamente com base na categoria ativa -->
+            </div>
+          </div>
+
+          <!-- Bloco Faixa de Preço -->
+          <div class="sidebar-box">
+            <div class="sidebar-header" onclick="toggleSidebarSection(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleSidebarSection(this);}" tabindex="0" role="button" aria-expanded="true" aria-label="Recolher ou expandir filtro de preço">
+              <h3>Faixa de Preço</h3>
+              <span class="collapse-icon" aria-hidden="true">&minus;</span>
+            </div>
+            <div class="sidebar-content">
+              <div class="price-slider-box">
+                <input type="range" id="priceRangeInput" min="0" max="4000" step="50" value="4000" class="price-slider" aria-label="Ajustar preço máximo dos móveis">
+                <div class="price-slider-labels">
+                  <span id="priceMinLabel">R$ 0,00</span>
+                  <span id="priceMaxLabel">R$ 4.000,00</span>
+                </div>
+              </div>
+              
+              <label class="sidebar-checkbox">
+                <input type="checkbox" id="onlyPromoCheckbox">
+                <span>Somente pronta entrega</span>
+              </label>
+
+              <button id="btnApplyPriceFilter" class="btn-sidebar-filter" type="button">Aplicar filtro</button>
+            </div>
+          </div>
+
+        </div><!-- /.sidebar-inner -->
+      </aside>
+
+      <!-- Conteúdo Principal com Barra de Ordenação e Grid -->
+      <section class="catalog-content-area">
+        
+        <!-- Barra de Controle do Catálogo -->
+        <div class="catalog-control-bar">
+          <div class="control-left">
+            <button id="btnToggleMobileFilter" class="btn-mobile-filter" type="button">
+              <i class="fa-solid fa-sliders"></i> Filtros
+            </button>
+            <span id="productCounter" class="product-counter">Preparando catálogo...</span>
+          </div>
+
+          <div class="control-right">
+            <!-- Ordenação -->
+            <div class="sort-wrapper">
+              <label for="sortSelect" class="sort-label"><i class="fa-solid fa-arrow-down-short-wide"></i></label>
+              <select id="sortSelect" class="sort-select">
+                <option value="padrao">Destaques</option>
+                <option value="menor-preco">Menor Preço</option>
+                <option value="maior-preco">Maior Preço</option>
+                <option value="nome-az">Nome (A - Z)</option>
+              </select>
+            </div>
+
+            <!-- Alternador de Grid (Igual ao print: 2, 3, 4 colunas) -->
+            <div class="grid-view-switcher" role="group" aria-label="Opções de visualização em colunas">
+              <button type="button" class="btn-view" data-cols="2" title="Visualização em 2 Colunas" aria-label="Visualização em grade de 2 colunas"><i class="fa-solid fa-table-cells-large"></i></button>
+              <button type="button" class="btn-view active" data-cols="3" title="Visualização em 3 Colunas" aria-label="Visualização em grade de 3 colunas"><i class="fa-solid fa-table-cells"></i></button>
+              <button type="button" class="btn-view" data-cols="4" title="Visualização em 4 Colunas" aria-label="Visualização em grade de 4 colunas"><i class="fa-solid fa-border-all"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grid de Produtos (2 colunas no mobile por padrão, 3 no desktop) -->
+        <div id="productsGrid" class="products-grid" role="region" aria-label="Lista de móveis disponíveis">
+          <!-- Inserido dinamicamente via app.js -->
+        </div>
+
+        <!-- Paginação Progressiva / Carregar Mais Móveis -->
+        <div id="paginationContainer" class="pagination-container" style="display:none;">
+          <button id="btnLoadMore" class="btn-load-more" type="button" aria-label="Carregar mais móveis do catálogo">
+            <i class="fa-solid fa-angles-down"></i> Ver mais móveis
+          </button>
+          <div id="paginationInfo" class="pagination-info"></div>
+        </div>
+
+        <!-- Mensagem de Nenhum Produto Encontrado -->
+        <div id="emptyState" class="empty-state" style="display:none;">
+          <i class="fa-solid fa-magnifying-glass-arrow-right"></i>
+          <h3>Nenhum resultado encontrado</h3>
+          <p>Nenhum móvel corresponde à busca ou aos filtros aplicados. Tente palavras diferentes ou remova os filtros.</p>
+          <button id="btnResetFilters" class="btn-reset-filters" type="button">Ver todos os móveis</button>
+        </div>
+
+      </section>
+    </div>
+
+  </main>
+
+  <!-- Modal de Detalhes do Produto -->
+  <div id="productModal" class="modal-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-card">
+      <button id="btnCloseModal" class="modal-close-btn" title="Fechar" aria-label="Fechar janela de detalhes do móvel">&times;</button>
+      
+      <div class="modal-body">
+        <!-- Coluna da Foto / Galeria -->
+        <div class="modal-gallery">
+          <div class="modal-main-image-wrapper">
+            <img id="modalMainImage" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23f8fafc'/%3E%3C/svg%3E" alt="Foto ampliada do móvel" loading="lazy">
+            <span id="modalBadge" class="product-tag">Pronta Entrega</span>
+          </div>
+          <div id="modalThumbnails" class="modal-thumbnails">
+            <!-- Miniaturas inseridas via JS -->
+          </div>
+        </div>
+
+        <!-- Coluna de Informações e Compra -->
+        <div class="modal-info">
+          <div class="modal-meta">
+            <span id="modalCategory" class="modal-category-tag">Sala de TV</span>
+            <span id="modalManufacturer" class="modal-brand-tag">Valdemóveis</span>
+          </div>
+
+          <h2 id="modalTitle" class="modal-title">Título do Produto</h2>
+          
+          <!-- Bloco de Preço -->
+          <div class="modal-price-box">
+            <div class="modal-price-main">
+              <span class="price-currency">R$</span>
+              <span id="modalPriceVal" class="price-number">0,00</span>
+            </div>
+            <div id="modalInstallment" class="modal-installment">em até 10x sem juros no cartão</div>
+            <div class="modal-discount-tag"><i class="fa-solid fa-percent"></i> Desconto especial para pagamento à vista</div>
+          </div>
+          
+          <!-- Observação Importante sobre Frete e Montagem -->
+          <div class="modal-frete-notice">
+            <div class="frete-notice-header">
+              <i class="fa-solid fa-circle-info"></i>
+              <span>Observação Importante:</span>
+            </div>
+            <p>O <strong>frete e a montagem NÃO estão inclusos</strong> no valor do móvel anunciado. Ambos os serviços são à parte e <strong>sob consulta</strong> de acordo com a sua região no RJ e o produto escolhido.</p>
+          </div>
+
+          <!-- Medidas & Dimensões -->
+          <div class="modal-dimensions-box">
+            <h3><i class="fa-solid fa-ruler-combined"></i> Dimensões do Móvel:</h3>
+            <div class="dimensions-grid">
+              <div class="dim-item">
+                <span class="dim-label">Largura</span>
+                <strong id="dimLargura">-</strong>
+              </div>
+              <div class="dim-item">
+                <span class="dim-label">Altura</span>
+                <strong id="dimAltura">-</strong>
+              </div>
+              <div class="dim-item">
+                <span class="dim-label">Profundidade</span>
+                <strong id="dimProfundidade">-</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Benefícios -->
+          <div class="modal-perks">
+            <div class="perk"><i class="fa-solid fa-truck-ramp-box"></i> Frete e montagem sob consulta para o seu bairro</div>
+            <div class="perk"><i class="fa-solid fa-shield"></i> Garantia contra defeitos de fabricação</div>
+            <div class="perk"><i class="fa-solid fa-comments"></i> Tire dúvidas e consulte frete direto no WhatsApp</div>
+          </div>
+
+          <!-- Botões de Ação -->
+          <div class="modal-actions">
+            <a id="modalBuyWhatsappBtn" href="#" target="_blank" class="btn-modal-buy">
+              <i class="fa-brands fa-whatsapp"></i> Pedir pelo WhatsApp
+            </a>
+            <button id="modalAddToCartBtn" class="btn-modal-add-cart">
+              <i class="fa-solid fa-bag-shopping"></i> Salvar no orçamento
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Drawer Lateral do Carrinho / Orçamento -->
+  <div id="cartDrawerOverlay" class="cart-drawer-overlay" style="display:none;"></div>
+  <aside id="cartDrawer" class="cart-drawer">
+    <div class="drawer-header">
+      <div class="drawer-title">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <h3>Meu orçamento</h3>
+      </div>
+      <button id="btnCloseCart" class="drawer-close-btn">&times;</button>
+    </div>
+
+    <!-- Lista de Itens do Carrinho -->
+    <div id="cartItemsList" class="drawer-items">
+      <!-- Inserido dinamicamente -->
+    </div>
+
+    <!-- Rodapé do Carrinho com Total e Botão WhatsApp -->
+    <div class="drawer-footer">
+      <div class="drawer-summary">
+        <div class="summary-line">
+          <span>Subtotal (sem frete):</span>
+          <strong id="cartTotalFooter" class="total-highlight">R$ 0,00</strong>
+        </div>
+        <div class="cart-frete-alert">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <div>
+            <strong>Frete e Montagem não inclusos:</strong>
+            <span>Valores sob consulta conforme o produto e a sua região no RJ.</span>
+          </div>
+        </div>
+      </div>
+
+      <a id="btnFinishOrderWhatsapp" href="#" target="_blank" class="btn-finish-whatsapp">
+        <i class="fa-brands fa-whatsapp"></i> Enviar orçamento pelo WhatsApp
+      </a>
+
+      <button id="btnClearCart" class="btn-clear-cart">Remover todos os itens</button>
+    </div>
+  </aside>
+
+  <!-- Botão Flutuante do WhatsApp -->
+  <div class="floating-whatsapp">
+    <a href="https://wa.me/5521964551053?text=Ol%C3%A1!%20Estou%20vendo%20o%20cat%C3%A1logo%20e%20gostaria%20de%20atendimento" target="_blank" class="whatsapp-float-btn" title="Fale conosco no WhatsApp">
+      <i class="fa-brands fa-whatsapp"></i>
+      <span class="whatsapp-float-tooltip">Fale com nosso consultor</span>
+    </a>
+  </div>
+
+  <!-- Rodapé Institucional -->
+  <footer class="main-footer">
+    <div class="container footer-content">
+      <div class="footer-col">
+        <div class="footer-brand">
+          <div class="logo-icon small"><i class="fa-solid fa-couch"></i></div>
+          <span class="brand-name">MÓVEIS <span>H.R</span></span>
+        </div>
+        <p class="footer-desc">Móveis H.R — distribuição e venda dos melhores móveis para a sua casa. As melhores marcas com preços direto do fornecedor para você.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4><i class="fa-brands fa-whatsapp"></i> Atendimento pelo WhatsApp</h4>
+        <p class="footer-phone"><strong>(21) 96455-1053</strong></p>
+        <p class="footer-hours">Segunda a Sexta: 08:00 às 18:00<br>Sábados: 08:00 às 14:00</p>
+      </div>
+
+      <div class="footer-col">
+        <h4><i class="fa-solid fa-truck-ramp-box"></i> Frete & Montagem</h4>
+        <p><strong>Atenção:</strong> O frete e a montagem não estão inclusos no preço dos móveis. Ambos são sob consulta por região (Rio, Baixada e Niterói) e produto.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4><i class="fa-solid fa-credit-card"></i> Pagamento Facilitado</h4>
+        <p>Pix, Dinheiro ou Cartão de Crédito em até 10x sem juros (ou 12x).</p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container bottom-content">
+        <p>© 2026 Móveis H.R. Todos os direitos reservados.</p>
+        <p>Preços e estoque sujeitos a alteração sem aviso prévio.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Dados do Catálogo (gerados pelo scraper.js) -->
+  <script src="produtos.js"></script>
+  <!-- Lógica da Aplicação -->
+  <script src="app.js"></script>
+
+</body>
+</html>

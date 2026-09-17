@@ -1,0 +1,3 @@
+@echo off
+title Abrindo Vitrine de Móveis...
+start "" "%~dp0index.html"
