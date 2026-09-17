@@ -161,6 +161,119 @@ document.addEventListener('DOMContentLoaded', () => {
   atualizarInterfaceCarrinho();
 });
 
+/* ==========================================================================
+   MOTOR DE BUSCA INTELIGENTE (SEM ACENTOS, MULTI-TERMO, SINÔNIMOS E PLURAIS)
+   ========================================================================== */
+
+const STOP_WORDS_BUSCA = new Set([
+  'de', 'do', 'da', 'dos', 'das', 'com', 'para', 'pra', 'em', 'e', 
+  'o', 'a', 'os', 'as', 'um', 'uma', 'no', 'na', 'nos', 'nas', 'por', 'c'
+]);
+
+const EQUIVALENCIAS_BUSCA = {
+  'sofas': 'sofa',
+  'estofado': 'sofa',
+  'estofados': 'sofa',
+  'poltronas': 'poltrona',
+  'roupeiro': 'guarda roupa',
+  'roupeiros': 'guarda roupa',
+  'guarda roupas': 'guarda roupa',
+  'armarios': 'armario',
+  'comodas': 'comoda',
+  'cadeiras': 'cadeira',
+  'mesas': 'mesa',
+  'portas': 'porta',
+  'pts': 'porta',
+  'pt': 'porta',
+  'gavetas': 'gaveta',
+  'gav': 'gaveta',
+  'lugares': 'lugar',
+  'lug': 'lugar',
+  'colchoes': 'colchao',
+  'camas': 'cama',
+  'moveis': 'movel',
+  'ripados': 'ripado',
+  'casais': 'casal',
+  'solteiros': 'solteiro'
+};
+
+function normalizarTextoBusca(str) {
+  if (!str) return '';
+  return str.toString().toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // remove acentos (ex: sofá -> sofa, colchão -> colchao)
+    .replace(/[ç]/g, 'c')
+    .replace(/[-_.,\/#!$%\^&\*;:{}=\-_`~()+]/g, ' ') // hifens e pontuações viram espaços
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function prepararIndiceBusca(lista) {
+  if (!Array.isArray(lista)) return;
+  lista.forEach(item => {
+    const partes = [
+      item.titulo,
+      item.fabricante,
+      item.categoria,
+      item.tagDestaque,
+      item.dimensoes ? `${item.dimensoes.largura || ''} ${item.dimensoes.altura || ''} ${item.dimensoes.profundidade || ''}` : ''
+    ];
+    let norm = normalizarTextoBusca(partes.filter(Boolean).join(' '));
+
+    const extras = [];
+    if (norm.includes('guarda roupa')) extras.push('roupeiro guarda-roupa');
+    if (norm.includes('roupeiro')) extras.push('guarda roupa guarda-roupa armario');
+    if (norm.includes('sofa')) extras.push('estofado estofados');
+    if (norm.includes('estofado')) extras.push('sofa sofas');
+    if (norm.includes('colchao')) extras.push('cama box colchoes colchao');
+    if (norm.includes('cama')) extras.push('cama box camas cabeceira');
+    if (norm.includes('comoda')) extras.push('gaveteiro gavetas comoda');
+    if (norm.includes('balcao') || norm.includes('paneleiro') || norm.includes('aereo')) extras.push('cozinha armario');
+
+    if (norm.includes('pts') || norm.includes('pt')) extras.push('portas porta');
+    if (norm.includes('portas') || norm.includes('porta')) extras.push('pts pt');
+    if (norm.includes('cad')) extras.push('cadeiras cadeira');
+    if (norm.includes('lug')) extras.push('lugares lugar');
+    if (norm.includes('gav')) extras.push('gavetas gaveta');
+
+    if (extras.length > 0) {
+      norm += ' ' + extras.join(' ');
+    }
+    item._searchHaystack = norm;
+  });
+}
+
+function extrairTermosBusca(query) {
+  const norm = normalizarTextoBusca(query);
+  if (!norm) return [];
+  const termos = norm.split(' ').filter(Boolean);
+  if (termos.length <= 1) return termos;
+  const filtrados = termos.filter(t => !STOP_WORDS_BUSCA.has(t));
+  return filtrados.length > 0 ? filtrados : termos;
+}
+
+function verificarTermoNoProduto(termo, hay) {
+  if (hay.includes(termo)) return true;
+  // Plural simples terminado em 's'
+  if (termo.endsWith('s') && termo.length > 3) {
+    const sing = termo.slice(0, -1);
+    if (hay.includes(sing)) return true;
+  }
+  // Plural em 'es' (ex: colchoes -> colchao)
+  if (termo.endsWith('es') && termo.length > 4) {
+    const semEs = termo.slice(0, -2);
+    if (hay.includes(semEs) || hay.includes(semEs + 'ao')) return true;
+  }
+  // Mapeamento de equivalências
+  if (EQUIVALENCIAS_BUSCA[termo]) {
+    const eq = EQUIVALENCIAS_BUSCA[termo];
+    if (hay.includes(eq)) return true;
+    const eqParts = eq.split(' ');
+    if (eqParts.length > 1 && eqParts.every(p => hay.includes(p))) return true;
+  }
+  return false;
+}
+
 // Carrega os produtos de produtos.js ou produtos.json
 async function carregarProdutos() {
   const counterEl = document.getElementById('productCounter');
@@ -168,6 +281,7 @@ async function carregarProdutos() {
   // Prioridade 1: Dados carregados diretamente pelo script produtos.js
   if (window.CATALOGO_MOVEIS && Array.isArray(window.CATALOGO_MOVEIS) && window.CATALOGO_MOVEIS.length > 0) {
     STATE.produtos = window.CATALOGO_MOVEIS;
+    prepararIndiceBusca(STATE.produtos);
     inicializarCatalogo();
     return;
   }
@@ -177,6 +291,7 @@ async function carregarProdutos() {
     const res = await fetch('produtos.json');
     if (res.ok) {
       STATE.produtos = await res.json();
+      prepararIndiceBusca(STATE.produtos);
       inicializarCatalogo();
       return;
     }
@@ -218,20 +333,71 @@ function configurarEventos() {
   // 3. Campo de Pesquisa
   const searchInput = document.getElementById('searchInput');
   const clearBtn = document.getElementById('clearSearchBtn');
+  const searchIcon = document.getElementById('searchIconBtn') || document.querySelector('.search-icon');
 
-  searchInput.addEventListener('input', (e) => {
-    STATE.termoBusca = e.target.value.toLowerCase().trim();
-    clearBtn.style.display = STATE.termoBusca ? 'block' : 'none';
-    aplicarFiltros();
-  });
+  function executarBusca(valor, dispararScroll = false) {
+    const textoLimpo = valor.trim();
+    STATE.termoBusca = textoLimpo;
+    if (clearBtn) clearBtn.style.display = textoLimpo ? 'block' : 'none';
 
-  clearBtn.addEventListener('click', () => {
-    searchInput.value = '';
-    STATE.termoBusca = '';
-    clearBtn.style.display = 'none';
+    // Se o usuário digitou uma busca e estava em outra categoria, busca no catálogo inteiro
+    if (textoLimpo && STATE.categoriaAtiva !== 'todos') {
+      STATE.categoriaAtiva = 'todos';
+      STATE.subcategoriaAtiva = null;
+      document.querySelectorAll('.cat-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.category === 'todos');
+      });
+      document.querySelectorAll('.dropdown-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      renderizarSidebarCategorias();
+    }
+
     aplicarFiltros();
-    searchInput.focus();
-  });
+
+    if (dispararScroll && textoLimpo) {
+      const banner = document.getElementById('categoryHeaderBanner') || document.getElementById('productsGrid');
+      if (banner) {
+        banner.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }
+
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      executarBusca(e.target.value, false);
+    });
+
+    searchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        executarBusca(searchInput.value, true);
+        searchInput.blur(); // Fecha teclado no mobile
+      }
+    });
+  }
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      if (searchInput) {
+        searchInput.value = '';
+        searchInput.focus();
+      }
+      executarBusca('', false);
+    });
+  }
+
+  if (searchIcon) {
+    searchIcon.addEventListener('click', () => {
+      if (searchInput) {
+        if (!searchInput.value) {
+          searchInput.focus();
+        } else {
+          executarBusca(searchInput.value, true);
+        }
+      }
+    });
+  }
 
   // 4. Seletor de Ordenação
   document.getElementById('sortSelect').addEventListener('change', (e) => {
@@ -365,6 +531,15 @@ function aplicarColunasIniciais() {
 
 // Seleciona Categoria e opcionalmente Subcategoria
 function selecionarCategoria(categoria, subNome) {
+  // Se selecionar uma categoria pela navegação, limpa a busca de texto
+  if (STATE.termoBusca) {
+    const sInput = document.getElementById('searchInput');
+    const cBtn = document.getElementById('clearSearchBtn');
+    if (sInput) sInput.value = '';
+    if (cBtn) cBtn.style.display = 'none';
+    STATE.termoBusca = '';
+  }
+
   STATE.categoriaAtiva = categoria;
 
   const cfg = CATEGORIAS_CONFIG[categoria] || CATEGORIAS_CONFIG['todos'];
@@ -435,9 +610,22 @@ function selecionarSubcategoriaPorSidebar(subNome) {
 
 // Atualiza o Cabeçalho Informativo acima da grade
 function atualizarBannerCategoria() {
-  const cfg = CATEGORIAS_CONFIG[STATE.categoriaAtiva] || CATEGORIAS_CONFIG['todos'];
   const bannerTitle = document.getElementById('categoryBannerTitle');
   const bannerDesc = document.getElementById('categoryBannerDesc');
+  if (!bannerTitle || !bannerDesc) return;
+
+  if (STATE.termoBusca) {
+    const total = STATE.produtosFiltrados.length;
+    bannerTitle.innerHTML = `Busca por: "<span>${escapeHtml(STATE.termoBusca)}</span>"`;
+    if (total > 0) {
+      bannerDesc.textContent = `Exibindo ${total} móve${total === 1 ? 'l encontrado' : 'is encontrados'} para a sua pesquisa.`;
+    } else {
+      bannerDesc.textContent = `Nenhum móvel encontrado para "${STATE.termoBusca}". Tente palavras sem acento ou termos diferentes.`;
+    }
+    return;
+  }
+
+  const cfg = CATEGORIAS_CONFIG[STATE.categoriaAtiva] || CATEGORIAS_CONFIG['todos'];
 
   if (STATE.subcategoriaAtiva && STATE.subcategoriaAtiva.nome && STATE.subcategoriaAtiva.filtro) {
     bannerTitle.innerHTML = `${cfg.titulo.split(' no')[0]} &rsaquo; <span>${escapeHtml(STATE.subcategoriaAtiva.nome)}</span>`;
@@ -547,17 +735,21 @@ function aplicarFiltros() {
     itens = itens.filter(item => item.tagDestaque && (item.tagDestaque.includes('Estoque') || item.tagDestaque.includes('Pronta')));
   }
 
-  // 5. Filtro por Busca de Texto
+  // 5. Filtro por Busca de Texto Inteligente (sem acentos, plurais, sinônimos, múltiplos termos)
   if (STATE.termoBusca) {
-    itens = itens.filter(item => {
-      const texto = `${item.titulo} ${item.fabricante} ${item.categoria}`.toLowerCase();
-      return texto.includes(STATE.termoBusca);
-    });
+    const termos = extrairTermosBusca(STATE.termoBusca);
+    if (termos.length > 0) {
+      itens = itens.filter(item => {
+        const hay = item._searchHaystack || normalizarTextoBusca(`${item.titulo} ${item.fabricante} ${item.categoria}`);
+        return termos.every(t => verificarTermoNoProduto(t, hay));
+      });
+    }
   }
 
   STATE.produtosFiltrados = itens;
   aplicarOrdenacao();
   renderizarProdutos();
+  atualizarBannerCategoria();
 }
 
 // Ordena a lista filtrada
