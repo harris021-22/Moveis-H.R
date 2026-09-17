@@ -149,15 +149,21 @@ select:focus-visible {
 }
 
 /* ==========================================================================
-   CABEÇALHO PRINCIPAL
+   CABEÇALHO PRINCIPAL E CONTÊINER FIXO
    ========================================================================== */
-.main-header {
-  background: #ffffff;
-  box-shadow: var(--shadow-sm);
+.header-sticky-wrapper {
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 500;
+  background: #ffffff;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+}
+
+.main-header {
+  background: #ffffff;
   border-bottom: 1px solid var(--border-color);
+  position: relative;
+  z-index: 2;
 }
 
 .header-container {
@@ -385,8 +391,7 @@ select:focus-visible {
   background: #ffffff;
   border-bottom: 1px solid #e2e8f0;
   position: relative;
-  z-index: 100;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  z-index: 1;
 }
 
 .nav-menu {
@@ -679,7 +684,7 @@ select:focus-visible {
 /* Sidebar de Filtros Lateral */
 .catalog-sidebar {
   position: sticky;
-  top: 90px;
+  top: 135px;
 }
 
 /* Wrapper neutro no desktop; vira painel do drawer no mobile */
@@ -2618,6 +2623,7 @@ body {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
+.header-sticky-wrapper,
 .main-header {
   padding-top: env(safe-area-inset-top, 0px);
 }
